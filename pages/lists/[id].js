@@ -31,7 +31,7 @@ const ListPage = props => {
         <title>{title} - Hugo's List</title>
       </Head>
       <div className={styles['container']}>
-        <h1 className={styles.title}>List: {title}</h1>
+        <h1 className={styles.title}>{title}</h1>
         <ListInput onSubmit={handleSubmit}/>
         <List items={items} onUpdate={handleUpdate} />
       </div>

@@ -8,9 +8,9 @@ const ListItem = props => {
   return (
     <Draggable draggableId={item.id} index={index}>
       {provided => (
-        <li className={cx(styles['list-item'], ui.card)} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+        <li className={cx(styles['list-item'], ui.card)} ref={provided.innerRef} {...provided.draggableProps}>
           <div className={styles.heading}>
-            <span className={styles.handle} />
+            <span className={styles.handle} {...provided.dragHandleProps} />
             <h2 className={styles.title}>{item.title}</h2>
           </div>
         </li>

@@ -13,15 +13,16 @@ const ListInput = props => {
       [key]: value
     });
   };
-  const handleSubmit = (event) => {
+  const handleSubmit = event => {
     event.preventDefault();
     onSubmit(item);
-    setItem(initialitem);
+    setItem(initialItem);
   };
   return (
-    <form className={cx(styles['list-input'], ui.card)} onSubmit={handleSubmit}>
-      <input className={styles.input} type="text" value={item.title} onChange={e => handleChange('title', e.target.value)} required />
-      <button className={styles.submit} type="submit">+</button>
+    <form className={cx(styles['container'], ui.card)} onSubmit={handleSubmit}>
+      <label className={styles.label} htmlFor="new-item-title">item title</label>
+      <input className={styles.input} id="new-item-title" type="text" value={item.title} onChange={e => handleChange('title', e.target.value)} required />
+      <button className={styles.submit} type="submit" aria-label="Add">+</button>
     </form>
   );
 };

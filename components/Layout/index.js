@@ -4,11 +4,13 @@ import styles from './styles.module.css';
 const Layout = props => {
   const { children } = props;
   return (
-    <div className={styles.layout}>
+    <div className={styles.container}>
       <Head>
         <title>Hugo's List</title>
       </Head>
-      {children}
+      <main>
+        {children}
+      </main>
     </div>
   );
 };
