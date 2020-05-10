@@ -1,0 +1,17 @@
+.list-item:not(:last-child) {
+  margin-bottom: 10px;
+}
+.heading {
+  display: flex;
+}
+.handle {
+  background-color: orange;
+  border-radius: 25%;
+  height: 16px;
+  margin-right: 10px;
+  width: 16px;
+}
+.title {
+  font-size: 16px;
+  margin: 0;
+}
