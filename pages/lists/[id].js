@@ -8,10 +8,8 @@ import List from '../../components/List';
 import styles from './styles.module.css';
 import client from '../../lib/client';
 
-const API_URL = process.env.API_URL;
-
 const ListPage = props => {
-  const { list: { _id: id, title, items: initialItems = [] } = {}, errorCode } = props;
+  const { list: { _id: id, title, items: initialItems = [], lastUpdated } = {}, errorCode } = props;
   if (errorCode) return <Error statusCode={errorCode} />;
   const firstRun = useRef(true);
   const [items, setItems] = useState(initialItems);
@@ -22,6 +20,7 @@ const ListPage = props => {
       return;
     }
     client(`/api/lists/${id}`, { body: { id, items } })
+      .then(data => console.log(data))
       .catch(error => console.error(error));
   }, [items]);
   const handleSubmit = (item) => {
@@ -33,6 +32,15 @@ const ListPage = props => {
       }
     ]);
   };
+  const formattedLastUpdated = lastUpdated && new Date(lastUpdated).toLocaleDateString('end-US', {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    hour12: true
+  });
   return (
     <React.Fragment>
       <Head>
@@ -42,6 +50,9 @@ const ListPage = props => {
         <h1 className={styles.title}>{title}</h1>
         <ListInput onSubmit={handleSubmit}/>
         <List items={items} onUpdate={setItems} />
+       {formattedLastUpdated && (
+         <div className={styles.timestamp}>Last updated {formattedLastUpdated}</div>
+       )}
       </div>
     </React.Fragment>
   );
@@ -49,6 +60,7 @@ const ListPage = props => {
 
 export async function getServerSideProps({params, res}) {
   const { id } = params;
+  const API_URL = process.env.API_URL;
   const response = await fetch(`${API_URL}/lists/${id}`);
   res.statusCode = response.status;
   if (response.status !== 200) return { props: { errorCode: response.status }};

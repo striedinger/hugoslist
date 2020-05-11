@@ -8,18 +8,19 @@ handler
   .use(database)
   .get(async (req, res) => {
     const { query: { id }, db, ObjectID } = req;
-    const list = await db.collection(COLLECTION).findOne({ _id: ObjectID(id) });
-    if (list) return res.json(list);
+    const document = await db.collection(COLLECTION).findOne({ _id: ObjectID(id) });
+    if (document) return res.json(document);
     res.status(404).send('Not Found');
   })
   .post(async (req, res) => {
     const { body: { id, items } = {}, db, ObjectID } = req;
-    const updatedList = await db.collection(COLLECTION).updateOne({ _id: ObjectID(id) }, {
+    const document = await db.collection(COLLECTION).findOneAndUpdate({ _id: ObjectID(id) }, {
       $set: {
+        lastUpdated: new Date(),
         items
       }
     });
-    if (updatedList) return res.json({ id, items });
+    if (document && document.value) return res.json(document.value);
     res.status(404).send('Not Found');
   });
 

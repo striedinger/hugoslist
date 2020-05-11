@@ -9,11 +9,12 @@ handler
     const { body: data } = req;
     if (!data || !data.title) return res.status(400).send('Bad Request');
     const list = {
+      createdAt: new Date(),
       title: data.title,
       items: []
     };
-    const insertedList = await req.db.collection('lists').insertOne(list);
-    if (insertedList && insertedList.insertedId) return res.json({ id: insertedList.insertedId});
+    const document = await req.db.collection('lists').insertOne(list);
+    if (document && document.insertedId) return res.json({ id: document.insertedId});
     res.status(500).send('Database Error');
   });
 
