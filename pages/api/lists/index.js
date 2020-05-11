@@ -1,5 +1,5 @@
 import nextConnect from 'next-connect';
-import database from '../../../lib/middleware/database';
+import database from 'lib/middleware/database';
 
 const handler = nextConnect();
 

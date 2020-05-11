@@ -1,12 +1,11 @@
-import fetch from 'isomorphic-unfetch';
 import { useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import Head from 'next/head';
 import Error from 'next/error';
-import ListInput from '../../components/ListInput';
-import List from '../../components/List';
+import ListInput from 'components/ListInput';
+import List from 'components/List';
+import client from 'lib/client';
 import styles from './styles.module.css';
-import client from '../../lib/client';
 
 const ListPage = props => {
   const { list: initialList = {}, errorCode } = props;
@@ -67,7 +66,7 @@ const ListPage = props => {
 
 export async function getServerSideProps({params, res}) {
   const { id } = params;
-  const API_URL = process.env.API_URL;
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const response = await fetch(`${API_URL}/lists/${id}`);
   res.statusCode = response.status;
   if (response.status !== 200) return { props: { errorCode: response.status }};

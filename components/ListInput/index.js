@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import cx from 'classnames';
-import ui from '../../lib/styles/ui.module.css';
+import ui from 'lib/styles/ui.module.css';
 import styles from './styles.module.css';
 
 const ListInput = props => {

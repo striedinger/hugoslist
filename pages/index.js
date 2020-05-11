@@ -1,4 +1,4 @@
-import NewListInput from '../components/NewListInput';
+import NewListInput from 'components/NewListInput';
 import styles from './styles.module.css';
 
 const Home = () => {

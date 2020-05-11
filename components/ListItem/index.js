@@ -1,6 +1,6 @@
 import { Draggable} from "react-beautiful-dnd";
 import cx from 'classnames';
-import ui from '../../lib/styles/ui.module.css';
+import ui from 'lib/styles/ui.module.css';
 import styles from './styles.module.css';
 
 const ListItem = props => {

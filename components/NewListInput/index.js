@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import Router from 'next/router';
 import cx from 'classnames';
-import client from '../../lib/client';
-import ui from '../../lib/styles/ui.module.css';
+import client from 'lib/client';
+import ui from 'lib/styles/ui.module.css';
 import styles from './styles.module.css';
 
 const NewListInput = () => {

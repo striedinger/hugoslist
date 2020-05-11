@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import cx from 'classnames';
-import ListItem from '../ListItem';
-import ui from '../../lib/styles/ui.module.css';
+import ListItem from 'components/ListItem';
+import ui from 'lib/styles/ui.module.css';
 import styles from './styles.module.css';
 
 const InnerList = React.memo(function InnerList(props) {
