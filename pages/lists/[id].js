@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-unfetch';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import Head from 'next/head';
 import Error from 'next/error';
@@ -9,28 +9,35 @@ import styles from './styles.module.css';
 import client from '../../lib/client';
 
 const ListPage = props => {
-  const { list: { _id: id, title, items: initialItems = [], lastUpdated } = {}, errorCode } = props;
+  const { list: initialList = {}, errorCode } = props;
   if (errorCode) return <Error statusCode={errorCode} />;
-  const firstRun = useRef(true);
-  const [items, setItems] = useState(initialItems);
-  useEffect(() => {
-    // This is to avoid fetching data on first mount, since we are providing through SSR
-    if (firstRun.current) {
-      firstRun.current = false;
-      return;
-    }
-    client(`/api/lists/${id}`, { body: { id, items } })
-      .then(data => console.log(data))
-      .catch(error => console.error(error));
-  }, [items]);
-  const handleSubmit = (item) => {
-    setItems([
-      ...items,
-      {
-        ...item,
-        id: uuid()
-      }
-    ]);
+  const [list, setList] = useState(initialList);
+  const { title, lastUpdated, items, _id: id} = list;
+  const saveLocalList = newItems => {
+    setList({
+      ...list,
+      items: newItems
+    });
+  };
+  const saveList = newItems => {
+    client(`/api/lists/${id}`, { body: { id, items: newItems } })
+      .then(data => setList(data))
+      .catch(error => {
+        console.error(error);
+        setList({
+          ...list,
+          items
+        });
+      });
+  };
+  const handleSubmit = item => {
+    const newItems = [...items, { ...item, id: uuid() }];
+    saveLocalList(newItems);
+    saveList(newItems);
+  };
+  const handleUpdate = newItems => {
+    saveLocalList(newItems);
+    saveList(newItems);
   };
   const formattedLastUpdated = lastUpdated && new Date(lastUpdated).toLocaleDateString('end-US', {
     year: 'numeric',
@@ -49,7 +56,7 @@ const ListPage = props => {
       <div className={styles['container']}>
         <h1 className={styles.title}>{title}</h1>
         <ListInput onSubmit={handleSubmit}/>
-        <List items={items} onUpdate={setItems} />
+        <List items={items} onUpdate={handleUpdate} />
        {formattedLastUpdated && (
          <div className={styles.timestamp}>Last updated {formattedLastUpdated}</div>
        )}

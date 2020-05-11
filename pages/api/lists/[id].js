@@ -19,7 +19,8 @@ handler
         lastUpdated: new Date(),
         items
       }
-    });
+    },
+    { returnOriginal: false });
     if (document && document.value) return res.json(document.value);
     res.status(404).send('Not Found');
   });
